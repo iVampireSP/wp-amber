@@ -1,5 +1,8 @@
 <?php
 
+const COMMENTS_LIMIT = 5;
+CONST POSTS_LIMIT = 5;
+
 header( "Content-Type: application/json" );
 
 $json = json_decode(file_get_contents('php://input'), true);
@@ -61,7 +64,7 @@ switch ($json["function_name"]) {
 		$args = [
 			's' => sanitize_text_field($parameters["keyword"]),
 			'post_type' => 'post',
-			'posts_per_page' => 10
+			'posts_per_page' => POSTS_LIMIT
 		];
 		$query = new WP_Query($args);
 
@@ -69,10 +72,17 @@ switch ($json["function_name"]) {
 			$content = "搜索到 " . $query->post_count . ' 个' . PHP_EOL;
 
 			foreach ($query->posts as $post) {
+				// 获取评论
+				$comments = get_post_comment($post->ID);
+
 				$content .= "文章 ID: " . $post->ID .
 				            ", 链接: " . get_permalink($post->ID) .
 				            ", 标题: " . $post->post_title .
 				            ', 内容: '. $post->post_content . PHP_EOL;
+
+				if ($comments != "") {
+					$content .= $comments . PHP_EOL;
+				}
 			}
 
 			exit_json([
@@ -99,10 +109,16 @@ switch ($json["function_name"]) {
 			]);
 		}
 
+		// 获取评论
+		$comments = get_post_comment($post->ID);
 
 		$text = "文章 ID: " . $post_id;
 		$text .= "\n\n标题: " . $post->post_title;
 		$text .= "\n\n内容: " . $post->post_content;
+
+		if ($comments != "") {
+			$text .= "\n\n评论: " . PHP_EOL . $comments;
+		}
 
 		echo json_encode([
 			'success' => true,
@@ -122,4 +138,23 @@ function exit_json($data): void {
 	exit(json_encode($data, JSON_UNESCAPED_UNICODE));
 }
 
+function get_post_comment($post_id) {
+	// 获取评论
+	$comments = get_comments([
+		'post_id' => $post_id,
+		'status' => 'approve',
+		'number' => COMMENTS_LIMIT,
+	]);
 
+	$comment_content = "";
+	if ($comments) {
+		$comment_content .= "评论: " . PHP_EOL;
+		for ($i = 0; $i < count($comments); $i++) {
+			$comment_content .= "评论 $i 的 ID: " . $comments[$i]->comment_ID .
+			            ", 链接: " . get_comment_link($comments[$i]->comment_ID) .
+			            ", 内容: " . $comments[$i]->comment_content . PHP_EOL;
+		}
+	}
+
+	return $comment_content;
+}
