@@ -47,7 +47,7 @@ const LIMIT_COUNT = 10;
 
 const SESSION_GUEST_ID_KEY = "amber_guest_id";
 
-function get_ip_address() {
+function leaflow_amber_get_ip_address() {
 	foreach (
 		[
 			'HTTP_CLIENT_IP',
@@ -73,7 +73,7 @@ function get_ip_address() {
 	return $_SERVER['REMOTE_ADDR'];
 }
 
-define( "CLIENT_IP", get_ip_address() );
+define( "CLIENT_IP", leaflow_amber_get_ip_address() );
 
 // 获取缓存
 function leaflow_amber_cache_get( $key ): int {
