@@ -138,7 +138,7 @@ class LeaflowAmber {
         const postId = this.getPostId()
 
         if (postId) {
-            this.sendMessage("解读文章(PostId"+postId+")")
+            this.sendMessage("解读文章(PostId:"+postId+")")
         }
     }
 
