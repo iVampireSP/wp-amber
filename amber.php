@@ -354,14 +354,16 @@ function amber_add_style_to_header(): void {
 }
 add_action('wp_head', 'amber_add_style_to_header', 999);
 
-// put post id to body class
-function amber_add_post_id_to_body_class( $classes ): array {
-	if ( is_singular() ) {
-		$classes[] = 'post-id-' . get_the_ID();
+// put a div contains post-id to comments
+function amber_add_post_id_to_comments(): void {
+	$options = amber_get_options();
+
+	if (empty($options['enable']) || $options['enable'] != 1) {
+		return;
 	}
 
-	return $classes;
+	$post_id = get_the_ID();
+	echo '<div data-amber-post-id="' . $post_id . '" style="display: none" ></div>';
 }
-
-add_filter( 'body_class', 'amber_add_post_id_to_body_class' );
+add_action('comment_form_top', 'amber_add_post_id_to_comments');
 ?>

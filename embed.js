@@ -242,8 +242,6 @@ class LeaflowAmber {
         }).then(res => {
             res.json().then(data => {
                 if (data.success) {
-                    console.log(data.data)
-
                     this.processing = true
 
                     addMessage()
@@ -548,6 +546,17 @@ class LeaflowAmber {
         return element.querySelector('.leaflow-amber-chat-content')
     }
 
+    getPostId() {
+        // 获取 attr 为 data-amber-post-id 的 div
+        let postId = document.querySelector('[data-amber-post-id]')
+
+        if (postId == null) {
+            return null
+        }
+
+        return postId.getAttribute('data-amber-post-id');
+    }
+
     //  下面的代码是用于自定义属性
     base_css = `.leaflow-amber-chat-container {
         display: flex;
@@ -787,17 +796,6 @@ class LeaflowAmber {
             </div>
         </div>
     </div>`
-    }
-
-    getPostId() {
-        // if body class list has post-id-*
-        if (document.body.classList.length > 0) {
-            for (let i = 0; i < document.body.classList.length; i++) {
-                if (document.body.classList[i].startsWith("post-id-")) {
-                    return document.body.classList[i].split("-")[2];
-                }
-            }
-        }
     }
 }
 
