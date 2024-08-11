@@ -23,8 +23,6 @@ $paths = explode( '/', $api_path );
 array_shift( $paths );
 const AMBER_URL = "https://amber-api.leaflow.cn/api/v1";
 
-header( "Content-Type: application/json" );
-
 $json = [];
 // 如果请求是 POST
 if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
@@ -128,12 +126,24 @@ function je( $data ): void {
 
 leaflow_amber_cache_incr();
 
-if (isset($paths[0]) && $paths[0] == 'stream' ) {
+if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
+	ob_end_clean();
 
-	http_response_code( 200 );
+	set_time_limit(60);
+
+	ini_set('output_buffering', 'off');
+	ini_set('zlib.output_compression', false);
 	header( 'Content-Type: text/event-stream' );
 	header( 'Cache-Control: no-cache' );
 	header( 'Connection: keep-alive' );
+	header( 'X-Accel-Buffering: no' );
+	ob_implicit_flush( 1 );
+
+	// 先发一条 started
+	echo "event: started\n";
+	echo "data: started\n\n";
+	ob_flush();
+	flush();
 
 	$sse_url = AMBER_URL . $api_path;
 
@@ -156,9 +166,12 @@ if (isset($paths[0]) && $paths[0] == 'stream' ) {
 	}
 
 	curl_close( $ch );
+
+	http_response_code( 200 );
+
 } else {
 	$json['assistant_token'] = $options['assistant_token'];
-	$json['guest_id'] = $_SESSION[SESSION_GUEST_ID_KEY] ?? generate_guest_id();
+	$json['guest_id']        = $_SESSION[ SESSION_GUEST_ID_KEY ] ?? generate_guest_id();
 
 	// 如果是 GET, 则解析 url 参数，将 assistant token 放入请求中
 	if ( $_SERVER['REQUEST_METHOD'] === 'GET' ) {
@@ -217,5 +230,5 @@ function proxy_request( $url, $data = null, $method = 'GET', $headers = [] ) {
 }
 
 function generate_guest_id() {
-	$_SESSION['amber_guest_id'] = substr( md5( uniqid( rand(), true ) ), 0, 20 );
+	return $_SESSION['amber_guest_id'] = substr( md5( uniqid( rand(), true ) ), 0, 20 );
 }
