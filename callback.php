@@ -13,43 +13,7 @@ if (is_null($json)) {
 
 $parameters = $json["parameters"];
 
-
-// 如果此文件不在WordPress环境中运行，则需要包含wp-load.php
-if ( ! defined( 'ABSPATH' ) ) {
-	$p = dirname( __FILE__ ) . '/../../../wp-load.php';
-	$p = realpath( $p );
-	require_once($p);
-}
-
-/**
- * 读取 amber 插件的选项
- */
-function read_amber_options() {
-	// 通常插件会有一个前缀来避免选项名冲突
-	$option_name = 'amber_options'; // 假设这是你的选项名称
-	$options     = get_option( $option_name );
-
-	if ( false === $options ) {
-		return false;
-	} else {
-		return $options;
-	}
-}
-
-$options = read_amber_options();
-if (!$options) {
-	exit_json([
-		'success' => false,
-		'content' => '博客没有配置 Amber Bot 插件。',
-	]);
-}
-
-if (empty($options['enable']) || $options['enable'] != 1) {
-	exit_json([
-		'success' => false,
-		'content' => '博客没有启用 Amber Bot 插件。',
-	]);
-}
+require_once 'init.php';
 
 if (!empty($options["callback_api_key"])) {
 	$bearer = $_SERVER['HTTP_AUTHORIZATION'];

@@ -2,8 +2,6 @@ class LeaflowAmber {
     processing = false
     synced = false
 
-    guest_id = undefined
-    assistant_token = undefined
     assistant_name = "助理"
     welcome_message = "你好，我是智能助理，你可以发送消息来问我问题。如果要清除聊天记录，请发送 /clear 。"
     message_cleared = "消息记录已经清除。"
@@ -14,15 +12,7 @@ class LeaflowAmber {
     button_css = "leaflow-amber-show-chat-button"
 
 
-    constructor(config, guest_id) {
-
-        if (!config.assistant_token) {
-            // error
-            throw new Error("assistant_token is required")
-        } else {
-            this.assistant_token = config.assistant_token;
-        }
-
+    constructor(config) {
         if (config.assistant_name) {
             this.assistant_name = config.assistant_name
         }
@@ -34,14 +24,6 @@ class LeaflowAmber {
         if (config.button_css) {
             this.button_css = config.button_css
         }
-
-
-        if (guest_id) {
-            this.guest_id = guest_id;
-        } else {
-            this.getGuestId()
-        }
-
     }
 
     amberContainer() {
@@ -174,7 +156,7 @@ class LeaflowAmber {
 
     amberConfig() {
         return {
-            server_url: "https://amber-api.leaflow.cn/api/v1"
+            server_url: "/wp-content/plugins/amber/stream.php"
         }
     }
 
@@ -203,7 +185,7 @@ class LeaflowAmber {
             return
         } else if (message === "/reset") {
             // 清除 localStorage
-            let needClear = ['leaflow_amber_chat_id', 'leaflow_amber_guest_id']
+            let needClear = ['leaflow_amber_chat_id']
 
             for (let i = 0; i < needClear.length; i++) {
                 localStorage.removeItem(needClear[i])
@@ -215,9 +197,7 @@ class LeaflowAmber {
             }
 
             this.chat_id = undefined;
-            this.guest_id = undefined;
 
-            this.getGuestId();
             this.getChatId();
 
             return
@@ -235,8 +215,6 @@ class LeaflowAmber {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                assistant_token: this.assistant_token,
-                guest_id: this.getGuestId(),
                 message: message
             })
         }).then(res => {
@@ -351,25 +329,7 @@ class LeaflowAmber {
     }
 
 
-    getGuestId() {
-        if (this.guest_id !== undefined) {
-            return this.guest_id;
-        }
 
-        const key = "leaflow_amber_guest_id"
-
-        let guest_id = localStorage.getItem(key)
-
-        if (!guest_id) {
-            // regenerate random string
-            guest_id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        }
-
-        localStorage.setItem(key, guest_id);
-        this.guest_id = guest_id;
-
-        return guest_id;
-    }
 
     async getChatId() {
         const key = "leaflow_amber_chat_id"
@@ -381,8 +341,6 @@ class LeaflowAmber {
             const name = new Date().toLocaleDateString() + ' 时 的对话'
 
             const r = {
-                "assistant_token": this.assistant_token,
-                "guest_id": this.getGuestId(),
                 "name": name
             }
 
@@ -429,13 +387,7 @@ class LeaflowAmber {
         this.setCalling("同步消息")
 
 
-        const q = new URLSearchParams({
-            assistant_token: this.assistant_token,
-            guest_id: this.getGuestId(),
-        })
-
-
-        fetch(this.amberConfig().server_url + "/chat_public/" + await this.getChatId() + '/messages?' + q.toString(), {
+        fetch(this.amberConfig().server_url + "/chat_public/" + await this.getChatId() + '/messages', {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -445,7 +397,7 @@ class LeaflowAmber {
             if (res.status === 403) {
                 this.setCalling("正在重置会话")
                 // 清除 localStorage
-                let needClear = ['leaflow_amber_chat_id', 'leaflow_amber_guest_id']
+                let needClear = ['leaflow_amber_chat_id', ]
 
                 for (let i = 0; i < needClear.length; i++) {
                     localStorage.removeItem(needClear[i])
@@ -457,9 +409,7 @@ class LeaflowAmber {
                 }
 
                 this.chat_id = undefined;
-                this.guest_id = undefined;
 
-                this.getGuestId();
                 this.getChatId();
                 this.setCalling()
 
@@ -495,10 +445,7 @@ class LeaflowAmber {
         this.setCalling("清除消息")
         fetch(this.amberConfig().server_url + "/chat_public/" + await this.getChatId() + '/clear', {
             method: "POST",
-            body: JSON.stringify({
-                assistant_token: this.assistant_token,
-                guest_id: this.getGuestId(),
-            }),
+            body: JSON.stringify({}),
             headers: {
                 "Content-Type": "application/json"
             }

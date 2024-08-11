@@ -3,12 +3,12 @@
 Plugin Name: Amber
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
-Version: 1.6
+Version: 1.6.2
 Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const LEAFLOW_AMBER_VERSION = '1.6.1';
+const LEAFLOW_AMBER_VERSION = '1.6.2';
 
 function amber_menu(): void {
 	add_options_page(
@@ -175,7 +175,7 @@ function amber_welcome_message_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
 	<label>
-<textarea
+<textarea cols="40" rows="5"
         name="amber_options[welcome_message]"><?php echo esc_textarea( $options['welcome_message'] ?? '' ); ?></textarea>
 	</label>
 	<?php
@@ -187,7 +187,7 @@ function amber_error_message_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
 	<label>
-<textarea
+<textarea cols="40" rows="5"
         name="amber_options[error_message]"><?php echo esc_textarea( $options['error_message'] ?? '' ); ?></textarea>
 	</label>
 	<?php
@@ -197,7 +197,7 @@ function amber_button_css_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
 	<label>
-<textarea
+<textarea cols="40" rows="5"
         name="amber_options[button_css]"><?php echo esc_textarea( $options['button_css'] ?? '' ); ?></textarea>
 	</label>
 	<?php
@@ -217,7 +217,7 @@ function amber_custom_css_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
     <label>
-       <textarea
+       <textarea cols="40" rows="5"
                name="amber_options[amber_custom_css]"><?php echo esc_textarea( $options['amber_custom_css'] ?? '' ); ?></textarea>
     </label>
 	<?php
@@ -295,11 +295,6 @@ function amber_add_script_to_footer(): void {
     }
 
     $config = [];
-
-
-    if (!empty($options['assistant_token'])) {
-        $config['assistant_token'] = $options['assistant_token'];
-    }
 
     if (!empty($options['assistant_name'])) {
         $config['assistant_name'] = $options['assistant_name'];
