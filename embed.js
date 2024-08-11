@@ -560,10 +560,10 @@ class LeaflowAmber {
                         element.innerHTML = newText;
                         index++;
                     } else {
-                        clearInterval(intervalId); // 清除定时器
+                        clearInterval(intervalId);
                     }
-                }, 200); // 每隔 200 毫秒添加一个字符
-            }, 1000); // 淡出时间设为 1 秒
+                }, 100);
+            }, 600);
         } else {
             element.innerHTML = title;
         }
@@ -781,7 +781,7 @@ class LeaflowAmber {
     }
     #leaflow-amber-assistant-name {
         color: white;
-        transition: color 1s ease-in-out;
+        transition: color 0.5s ease-in-out;
     }
     
 }

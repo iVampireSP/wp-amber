@@ -8,7 +8,7 @@ Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const LEAFLOW_AMBER_VERSION = '1.6.5.3';
+const LEAFLOW_AMBER_VERSION = '1.6.5.3-patch-1';
 
 function amber_menu(): void {
 	add_options_page(
