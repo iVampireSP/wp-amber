@@ -149,7 +149,15 @@ function get_post_comment($post_id) {
 	$comment_content = "";
 	if ($comments) {
 		$comment_content .= "评论: " . PHP_EOL;
+
 		for ($i = 0; $i < count($comments); $i++) {
+			$admin = user_can($comments[$i]->user_id, 'update_core');
+			if ($admin) {
+				$comment_content .= "博主";
+			} else {
+				$comment_content .= "用户";
+			}
+
 			$comment_content .= "评论 $i 的 ID: " . $comments[$i]->comment_ID .
 			            ", 链接: " . get_comment_link($comments[$i]->comment_ID) .
 			            ", 内容: " . $comments[$i]->comment_content . PHP_EOL;

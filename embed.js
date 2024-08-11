@@ -137,7 +137,7 @@ class LeaflowAmber {
 
         const postId = this.getPostId()
 
-        if (postId) {
+        if (postId && this.continueIfPostIsNotAnswered()) {
             this.sendMessage("解读文章(PostId:"+postId+")")
         }
     }
@@ -502,6 +502,27 @@ class LeaflowAmber {
         }
 
         return postId.getAttribute('data-amber-post-id');
+    }
+
+    continueIfPostIsNotAnswered() {
+        const postId = this.getPostId()
+        if (postId == null) {
+            return false
+        }
+
+        let answered = document.querySelector('[data-amber-post-id-' + postId + '-answered]')
+
+        if (answered == null) {
+            return false
+        }
+
+        // get attr, if false, mark it true
+        if (answered.getAttribute('data-amber-post-id-' + postId + '-answered') === 'false') {
+            answered.setAttribute('data-amber-post-id-' + postId + '-answered', 'true')
+            return true
+        }
+
+        return false
     }
 
     //  下面的代码是用于自定义属性

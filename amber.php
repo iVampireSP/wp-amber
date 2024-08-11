@@ -363,7 +363,7 @@ function amber_add_post_id_to_comment_form( $comment_registration ) {
 
 	global $post;
 	$post_id = $post->ID;
-	echo '<div data-amber-post-id="' . $post_id . '" style="display: none;"></div>';
+	echo '<div data-amber-post-id="' . $post_id . '"  data-amber-post-id-' . $post_id . '-answered="false"  style="display: none;"></div>';
 
 	remove_filter( current_filter(), __FUNCTION__ );
 
