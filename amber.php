@@ -3,12 +3,12 @@
 Plugin Name: Amber
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
-Version: 1.6.2
+Version: 1.6.4
 Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const LEAFLOW_AMBER_VERSION = '1.6.2';
+const LEAFLOW_AMBER_VERSION = '1.6.4';
 
 function amber_menu(): void {
 	add_options_page(
@@ -154,58 +154,57 @@ function amber_enable_callback(): void {
 function amber_assistant_token_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
-	<label>
-		<input type="text" name="amber_options[assistant_token]"
-		       value="<?php echo esc_attr( $options['assistant_token'] ?? '' ); ?>">
-	</label>
+    <label>
+        <input type="text" name="amber_options[assistant_token]"
+               value="<?php echo esc_attr( $options['assistant_token'] ?? '' ); ?>">
+    </label>
 	<?php
 }
 
 function amber_assistant_name_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
-	<label>
-		<input type="text" name="amber_options[assistant_name]"
-		       value="<?php echo esc_attr( $options['assistant_name'] ?? '' ); ?>">
-	</label>
+    <label>
+        <input type="text" name="amber_options[assistant_name]"
+               value="<?php echo esc_attr( $options['assistant_name'] ?? '' ); ?>">
+    </label>
 	<?php
 }
 
 function amber_welcome_message_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
-	<label>
+    <label>
 <textarea cols="40" rows="5"
-        name="amber_options[welcome_message]"><?php echo esc_textarea( $options['welcome_message'] ?? '' ); ?></textarea>
-	</label>
+          name="amber_options[welcome_message]"><?php echo esc_textarea( $options['welcome_message'] ?? '' ); ?></textarea>
+    </label>
 	<?php
 }
-
 
 
 function amber_error_message_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
-	<label>
+    <label>
 <textarea cols="40" rows="5"
-        name="amber_options[error_message]"><?php echo esc_textarea( $options['error_message'] ?? '' ); ?></textarea>
-	</label>
+          name="amber_options[error_message]"><?php echo esc_textarea( $options['error_message'] ?? '' ); ?></textarea>
+    </label>
 	<?php
 }
 
 function amber_button_css_callback(): void {
 	$options = get_option( 'amber_options' );
 	?>
-	<label>
+    <label>
 <textarea cols="40" rows="5"
-        name="amber_options[button_css]"><?php echo esc_textarea( $options['button_css'] ?? '' ); ?></textarea>
-	</label>
+          name="amber_options[button_css]"><?php echo esc_textarea( $options['button_css'] ?? '' ); ?></textarea>
+    </label>
 	<?php
 }
 
 function amber_api_key_callback(): void {
 	$options = get_option( 'amber_options' );
-    ?>
+	?>
     <label>
         <input type="text" name="amber_options[callback_api_key]"
                value="<?php echo esc_attr( $options['callback_api_key'] ?? '' ); ?>">
@@ -218,7 +217,7 @@ function amber_custom_css_callback(): void {
 	?>
     <label>
        <textarea cols="40" rows="5"
-               name="amber_options[amber_custom_css]"><?php echo esc_textarea( $options['amber_custom_css'] ?? '' ); ?></textarea>
+                 name="amber_options[amber_custom_css]"><?php echo esc_textarea( $options['amber_custom_css'] ?? '' ); ?></textarea>
     </label>
 	<?php
 }
@@ -259,9 +258,9 @@ function amber_sanitize( $input ): array {
 		$sanitized['button_css'] = sanitize_textarea_field( $input['button_css'] );
 	}
 
-    if ( isset( $input['callback_api_key'] ) ) {
-	    $sanitized['callback_api_key'] = sanitize_textarea_field( $input['callback_api_key'] );
-    }
+	if ( isset( $input['callback_api_key'] ) ) {
+		$sanitized['callback_api_key'] = sanitize_textarea_field( $input['callback_api_key'] );
+	}
 
 	if ( isset( $input['amber_custom_css'] ) ) {
 		$sanitized['amber_custom_css'] = sanitize_textarea_field( $input['amber_custom_css'] );
@@ -271,13 +270,13 @@ function amber_sanitize( $input ): array {
 }
 
 function amber_get_options() {
-	return get_option('amber_options');
+	return get_option( 'amber_options' );
 }
 
 // 获取插件URL路径
 function leaflow_amber_get_plugin_url(): string {
 	$plugin_file = __FILE__;
-	$plugin_url = plugin_dir_url($plugin_file);
+	$plugin_url  = plugin_dir_url( $plugin_file );
 
 	// 确保路径以斜杠结尾
 	if ( ! str_ends_with( $plugin_url, '/' ) ) {
@@ -286,44 +285,45 @@ function leaflow_amber_get_plugin_url(): string {
 
 	return $plugin_url;
 }
+
 function amber_add_script_to_footer(): void {
 	$options = amber_get_options();
 
-    // if not enable
-    if (empty($options['enable']) || $options['enable'] != 1) {
-        return;
-    }
+	// if not enable
+	if ( empty( $options['enable'] ) || $options['enable'] != 1 ) {
+		return;
+	}
 
-    $config = [];
+	$config = [];
 
-    if (!empty($options['assistant_name'])) {
-        $config['assistant_name'] = $options['assistant_name'];
-    }
+	if ( ! empty( $options['assistant_name'] ) ) {
+		$config['assistant_name'] = $options['assistant_name'];
+	}
 
-    if (!empty($options['welcome_message'])) {
-        $config['welcome_message'] = $options['welcome_message'];
-    }
+	if ( ! empty( $options['welcome_message'] ) ) {
+		$config['welcome_message'] = $options['welcome_message'];
+	}
 
 //    if (!empty($options['message_cleared'])) {
 //        $config['message_cleared'] = $options['message_cleared'];
 //    }
 
-    if (!empty($options['error_message'])) {
-        $config['error_message'] = $options['error_message'];
-    }
+	if ( ! empty( $options['error_message'] ) ) {
+		$config['error_message'] = $options['error_message'];
+	}
 //
 //    if (!empty($options['after_reset_message'])) {
 //        $config['after_reset_message'] = $options['after_reset_message'];
 //    }
 
-    if (!empty($options['button_css'])) {
-        $config['button_css'] = $options['button_css'];
-    }
+	if ( ! empty( $options['button_css'] ) ) {
+		$config['button_css'] = $options['button_css'];
+	}
 
-    $j = json_encode($config, JSON_UNESCAPED_UNICODE);
+	$j = json_encode( $config, JSON_UNESCAPED_UNICODE );
 
-    $plugin_dir = leaflow_amber_get_plugin_url();
-    $v = LEAFLOW_AMBER_VERSION;
+	$plugin_dir = leaflow_amber_get_plugin_url();
+	$v          = LEAFLOW_AMBER_VERSION;
 	echo <<<EOF
 <script src="{$plugin_dir}embed.js?t={$v}"></script>
     <script>
@@ -334,31 +334,45 @@ if (window.leaflow_amber === undefined) {
     </script>
 EOF;
 }
-add_action('wp_footer', 'amber_add_script_to_footer', 999); // 将回调函数添加到 wp_footer 钩子
+
+add_action( 'wp_footer', 'amber_add_script_to_footer', 999 ); // 将回调函数添加到 wp_footer 钩子
 
 
 function amber_add_style_to_header(): void {
 	$options = amber_get_options();
 
 	// if not enable
-	if (empty($options['enable']) || $options['enable'] != 1 || empty($options['amber_custom_css'])) {
+	if ( empty( $options['enable'] ) || $options['enable'] != 1 || empty( $options['amber_custom_css'] ) ) {
 		return;
 	}
 
-    echo '<style>' . $options['amber_custom_css'] . '</style>';
+	echo '<style>' . $options['amber_custom_css'] . '</style>';
 }
-add_action('wp_head', 'amber_add_style_to_header', 999);
 
-// put a div contains post-id to comments
-function amber_add_post_id_to_comments(): void {
+add_action( 'wp_head', 'amber_add_style_to_header', 999 );
+
+function amber_add_post_id_to_comment_form( $comment_registration ) {
+
+
 	$options = amber_get_options();
 
-	if (empty($options['enable']) || $options['enable'] != 1) {
-		return;
+	// if not enable
+	if ( empty( $options['enable'] ) || $options['enable'] != 1 ) {
+		return $comment_registration;
 	}
 
-	$post_id = get_the_ID();
-	echo '<div data-amber-post-id="' . $post_id . '" style="display: none" ></div>';
+	global $post;
+	$post_id = $post->ID;
+	echo '<div data-amber-post-id="' . $post_id . '" style="display: none;"></div>';
+
+	remove_filter( current_filter(), __FUNCTION__ );
+
+	return $comment_registration;
 }
-add_action('comment_form_top', 'amber_add_post_id_to_comments');
+
+add_action( 'comment_form_before', function () {
+	add_filter( 'pre_option_comment_registration', 'amber_add_post_id_to_comment_form' );
+} );
+
+
 ?>
