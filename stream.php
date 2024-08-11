@@ -128,7 +128,7 @@ function je( $data ): void {
 
 leaflow_amber_cache_incr();
 
-if ( $paths[0] == 'stream' ) {
+if (isset($paths[0]) && $paths[0] == 'stream' ) {
 
 	http_response_code( 200 );
 	header( 'Content-Type: text/event-stream' );
