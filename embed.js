@@ -84,7 +84,7 @@ class LeaflowAmber {
 
         // set name
         if (this.assistant_name) {
-            this.changeTitle(this.assistant_name)
+            this.changeTitle(this.assistant_name, false)
         }
 
 
@@ -532,13 +532,41 @@ class LeaflowAmber {
         return false
     }
 
-    changeTitle(title) {
+    changeTitle(title, animate = true) {
         if (title == null || title === "") {
-            title = this.assistant_name
+            title = this.assistant_name;
         }
-        this.assistant_name = title
-        document.querySelector("#leaflow-amber-assistant-name").innerHTML = title
+        this.assistant_name = title;
+
+        const element = document.querySelector("#leaflow-amber-assistant-name");
+
+        if (animate) {
+            let newText = "";
+            let originColor = element.style.color;
+
+            // 淡出旧文本
+            element.style.color = "transparent";
+            setTimeout(() => {
+                element.style.color = originColor
+
+                // 逐字显示新文本
+                let index = 0;
+                const intervalId = setInterval(() => {
+                    if (index < title.length) {
+                        newText += title.charAt(index);
+                        element.innerHTML = newText;
+                        index++;
+                    } else {
+                        clearInterval(intervalId); // 清除定时器
+                    }
+                }, 200); // 每隔 200 毫秒添加一个字符
+            }, 1000); // 淡出时间设为 1 秒
+        } else {
+            element.innerHTML = title;
+        }
     }
+
+
 
     spiltFunctionName(function_name) {
         // 根据 _ 分割
@@ -749,7 +777,8 @@ class LeaflowAmber {
         color: white
     }
     #leaflow-amber-assistant-name {
-        color: white
+        color: white;
+        transition: color 1s ease-in-out;
     }
     
 }
@@ -764,7 +793,7 @@ class LeaflowAmber {
         <div class="leaflow-amber-chat-container" id="leaflow-amber-chat-container">
             <div class="leaflow-amber-header">
                 <div class="leaflow-amber-header-title">
-                    <h2 id="leaflow-amber-assistant-name">助理</h2>
+                    <h2 id="leaflow-amber-assistant-name"></h2>
                 </div>
                 <button class="leaflow-amber-header-close" id="leaflow-amber-hide-chat"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
   <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
