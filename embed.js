@@ -199,10 +199,13 @@ class LeaflowAmber {
             this.chat_id = undefined;
 
             this.getChatId();
-
             return
+        }
 
-
+        const chatMessageContainer = this.chatMessageContainer()
+        // 检测滚动条是否在 chatMessageContainer 最底下，如果在，则滚动
+        if (chatMessageContainer.scrollTop + chatMessageContainer.clientHeight >= chatMessageContainer.scrollHeight) {
+            chatMessageContainer.scrollTop = chatMessageContainer.scrollHeight;
         }
 
         const addMessage = () => {
