@@ -84,7 +84,7 @@ class LeaflowAmber {
 
         // set name
         if (this.assistant_name) {
-            document.querySelector("#leaflow-amber-assistant-name").innerHTML = this.assistant_name
+            this.changeTitle(this.assistant_name)
         }
 
 
@@ -290,7 +290,14 @@ class LeaflowAmber {
 
             switch (data.state) {
                 case "tool_calling":
-                    this.setCalling(data.tool_call_message.tool_name + " 中的 " + data.tool_call_message.function_name)
+                    const function_name = this.spiltFunctionName(data.tool_call_message.function_name)
+                    this.setCalling(data.tool_call_message.tool_name + " 中的 " + function_name)
+                    const args = data.tool_call_message.args
+                    if (function_name === "change_title") {
+                        // 玩玩你的标题
+                        this.changeTitle(args.title)
+                    }
+
                     break;
                 case "tool_response":
                     setTimeout(() => {
@@ -523,6 +530,21 @@ class LeaflowAmber {
         }
 
         return false
+    }
+
+    changeTitle(title) {
+        if (title == null || title === "") {
+            title = this.assistant_name
+        }
+        this.assistant_name = title
+        document.querySelector("#leaflow-amber-assistant-name").innerHTML = title
+    }
+
+    spiltFunctionName(function_name) {
+        // 根据 _ 分割
+        let function_names = function_name.split("_");
+        // 从第 1 个开始取到最后一个
+        return function_names.slice(1).join("_");
     }
 
     //  下面的代码是用于自定义属性

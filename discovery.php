@@ -13,6 +13,14 @@ $plugin_dir = leaflow_amber_get_plugin_url();
 $blog_name = get_bloginfo( 'name' );
 $blog_description = get_bloginfo( 'description' );
 
+$options = get_option( 'amber_options' );
+
+// if not enable
+if ( empty( $options['enable'] ) || $options['enable'] != 1 ) {
+	return;
+}
+
+$assistant_name = $options['assistant_name'] ?? "助理";
 
 $func = [
 	"name"         => $blog_name . ' 的工具',
@@ -52,7 +60,22 @@ $func = [
 				"post_id"
 			]
 		],
-
+		[
+			"name" => "change_title",
+			"description" => "修改对话标题，默认是 $assistant_name",
+			"parameters" => (object) [
+				"type" => "object",
+				"properties" => [
+					"title" => [
+						"type" => "string",
+						"description" => "新的对话标题，要尽可能段"
+					]
+				]
+			],
+			"required" => (array) [
+				"title"
+			]
+		],
 	]
 ];
 

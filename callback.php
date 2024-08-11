@@ -126,6 +126,12 @@ switch ($json["function_name"]) {
 		]);
 
 		break;
+	case "change_title":
+		echo json_encode([
+			'success' => true,
+			'content' => "",
+		]);
+		break;
 	default:
 		echo json_encode([
 			'success' => false,
