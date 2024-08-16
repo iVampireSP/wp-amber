@@ -149,6 +149,11 @@ if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
 
 	$ch = curl_init( $sse_url );
 
+	// 设置对话中的 X-User-IP
+	curl_setopt( $ch, CURLOPT_HTTPHEADER, [
+		'X-User-IP: ' . CLIENT_IP,
+	] );
+
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt( $ch, CURLOPT_WRITEFUNCTION, function ( $ch, $data ) {
 		// 每次接收到数据时，立即将其发送给客户端
