@@ -602,6 +602,7 @@ class LeaflowAmber {
         z-index: 1000;
         border-radius: 10px;
         width: 50vh;
+        opacity: 0.95;
     }
     
     .leaflow-amber-header {
