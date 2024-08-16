@@ -171,9 +171,6 @@ if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
 	}
 
 	curl_close( $ch );
-
-	http_response_code( 200 );
-
 } else {
 	$json['assistant_token'] = $options['assistant_token'];
 	$json['guest_id']        = $_SESSION[ SESSION_GUEST_ID_KEY ] ?? generate_guest_id();
