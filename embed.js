@@ -292,6 +292,7 @@ class LeaflowAmber {
             if (e.data === "[DONE]") {
                 this.processing = false
                 evtSource.close();
+                return;
             }
 
             const data = JSON.parse(e.data);
