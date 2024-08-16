@@ -289,6 +289,11 @@ class LeaflowAmber {
                 chatMessageContainer.scrollTop = chatMessageContainer.scrollHeight;
             }
 
+            if (e.data === "[DONE]") {
+                this.processing = false
+                evtSource.close();
+            }
+
             const data = JSON.parse(e.data);
 
             switch (data.state) {
