@@ -3,13 +3,20 @@ class LeaflowAmber {
     synced = false
 
     assistant_name = "助理"
-    welcome_message = "你好，我是智能助理，你可以发送消息来问我问题。如果要清除聊天记录，请发送 /clear 。"
     message_cleared = "消息记录已经清除。"
 
     error_message = "发送消息的时候出了点问题，要不试试 /reset 来重置一下？"
     after_reset_message = "已重置会话。"
 
     button_css = "leaflow-amber-show-chat-button"
+
+    role_human = "user"
+    role_hide_human = "user_hide"
+    role_assistant = "assistant"
+    role_system = "system"
+    role_hide_system = "system_hide"
+
+    last_selected_text = ""
 
 
     constructor(config) {
@@ -98,7 +105,9 @@ class LeaflowAmber {
             }
         });
 
-        this.addAssistantMessage(this.welcome_message)
+        if (this.welcome_message !== "") {
+            this.addAssistantMessage(this.welcome_message)
+        }
 
 
         // 监听显示按钮点击事件
@@ -117,6 +126,14 @@ class LeaflowAmber {
         // clearButton.addEventListener("click", () => {
         //     this.clearMessage()
         // })
+
+        // 监听用户选择的文字
+        document.addEventListener('selectionchange', () => {
+            const selectedText = window.getSelection().toString();
+            if (selectedText) {
+                this.last_selected_text = selectedText
+            }
+        });
     }
 
     toggleChatVisibility() {
@@ -138,7 +155,7 @@ class LeaflowAmber {
         const postId = this.getPostId()
 
         if (postId && this.continueIfPostIsNotAnswered()) {
-            this.sendMessage("解读文章(PostId:"+postId+")")
+            this.sendMessage(this.role_human, "解读文章(PostId:"+postId+")")
         }
     }
 
@@ -160,12 +177,35 @@ class LeaflowAmber {
         }
     }
 
-    async sendMessage(message_override) {
+    lastAssistantMessage() {
+        const chatMessageContainer = this.chatMessageContainer();
+        let lastMessage = "";
+        let messageElement = chatMessageContainer.lastElementChild;
+
+        // 确保 class 是 leaflow-amber-chat-bubble-wrapper-left
+        if (messageElement && messageElement.classList.contains("leaflow-amber-chat-bubble-wrapper-left")) {
+            lastMessage = messageElement.querySelector(".leaflow-amber-chat-content").innerText
+        }
+
+        return lastMessage
+    }
+
+    async sendMessage(role, message_override) {
         if (this.processing) {
             return
         }
 
         let message = this.input().value
+        let messageRole = role
+        let addMessage = true
+        if  (!role) {
+            messageRole = this.role_human
+        }
+        if (messageRole === this.role_hide_system || messageRole === this.role_system
+            || messageRole === this.role_hide_human
+        ) {
+            addMessage = false
+        }
 
         if (!message_override) {
             if (message === "") {
@@ -208,24 +248,23 @@ class LeaflowAmber {
             chatMessageContainer.scrollTop = chatMessageContainer.scrollHeight;
         }
 
-        const addMessage = () => {
-            this.addHumanMessage(message, true)
-        }
-
         fetch(this.amberConfig().server_url + "/chat_public/" + await this.getChatId() + '/messages', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: message
+                message: message,
+                role: messageRole
             })
         }).then(res => {
             res.json().then(data => {
                 if (data.success) {
                     this.processing = true
 
-                    addMessage()
+                    if (addMessage) {
+                        this.addHumanMessage(message, true)
+                    }
 
                     this.stream(data.data.stream_id)
 
@@ -233,9 +272,11 @@ class LeaflowAmber {
 
                 } else {
                     if (res.status === 409) {
-                        addMessage()
-                        this.input().value = ""
+                        if (addMessage) {
+                            this.addHumanMessage(message, true)
+                        }
 
+                        this.input().value = ""
 
                         this.stream(data.data.stream_id)
 
@@ -279,8 +320,6 @@ class LeaflowAmber {
 
         const chatMessageContainer = this.chatMessageContainer()
 
-
-
         let added = false
 
         evtSource.addEventListener("data", (e) => {
@@ -296,15 +335,75 @@ class LeaflowAmber {
             }
 
             const data = JSON.parse(e.data);
-
             switch (data.state) {
                 case "tool_calling":
                     const function_name = this.spiltFunctionName(data.tool_call_message.function_name)
                     this.setCalling(data.tool_call_message.tool_name + " 中的 " + function_name)
                     const args = data.tool_call_message.args
-                    if (function_name === "change_title") {
-                        // 玩玩你的标题
-                        this.changeTitle(args.title)
+
+                    const special_tool = {
+                        'change_title': () => {
+                            // 玩玩你的标题
+                            this.changeTitle(args.title)
+                        },
+                        'close': () => {
+                            const closeInt = setInterval(() => {
+                                if (!this.processing) {
+                                    document.write(`<h3>${this.lastAssistantMessage()}</h3>`)
+                                    clearInterval(closeInt)
+                                }
+                            }, 1000)
+                        },
+                        'hide': () => {
+                            const hideInt = setInterval(() => {
+                                if (!this.processing) {
+                                    this.hide()
+                                    clearInterval(hideInt)
+                                }
+                            }, 1000)
+                        },
+                        'show': () => {
+                            this.show()
+                        },
+                        'get_current_post_id': () => {
+                            // 如果用户正在首页 /
+                            if (window.location.pathname === '/') {
+                                this.sendMessageWhileDone(this.role_hide_human, "[Event]用户当前在首页")
+                                return
+                            }
+                            let post_id = this.getPostId();
+
+                            if (post_id) {
+                                this.sendMessageWhileDone(this.role_hide_human, `[Event]用户当前正在查看的 PostID 是 ${post_id}`)
+                            } else {
+                                this.sendMessageWhileDone(this.role_hide_human, "[Event]用户查看的不是文章/页面")
+                            }
+                        },
+                        'get_selected_text': () => {
+                            let text = '';
+                            if (window.getSelection) {
+                                text = window.getSelection().toString()
+                            } else if (document.selection) {
+                                text = document.selection.createRange().text
+                            }
+
+                            if (text === '') {
+                                text = this.last_selected_text;
+                            }
+
+                            if (text !== '') {
+                                this.sendMessageWhileDone(this.role_hide_human, `[Event]用户选中的文本是:  ${text}`)
+                            } else {
+                                this.sendMessageWhileDone(this.role_hide_human, "[Event]用户没有选中任何文本")
+                            }
+                        }
+                    };
+
+                    // 如果是 特殊工具，则执行特殊工具
+                    if (special_tool[function_name]) {
+                        special_tool[function_name]()
+                        this.setCalling();
+                        return
                     }
 
                     break;
@@ -344,7 +443,14 @@ class LeaflowAmber {
 
     }
 
-
+    sendMessageWhileDone(role, message) {
+        const r = setInterval(() => {
+            if (!this.processing) {
+                this.sendMessage(role, message)
+                clearInterval(r)
+            }
+        });
+    }
 
 
     async getChatId() {
@@ -437,7 +543,7 @@ class LeaflowAmber {
                     data.data.forEach(item => {
                         if (item.role === "user") {
                             this.addHumanMessage(item.content, true)
-                        } else if (item.role == 'assistant') {
+                        } else if (item.role === 'assistant') {
                             this.addAssistantMessage(item.content, true)
                         }
                     });

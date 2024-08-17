@@ -1,7 +1,7 @@
 <?php
 
 const COMMENTS_LIMIT = 5;
-CONST POSTS_LIMIT = 5;
+const POSTS_LIMIT = 5;
 
 header( "Content-Type: application/json" );
 
@@ -126,6 +126,17 @@ switch ($json["function_name"]) {
 		]);
 
 		break;
+	case "get_current_post_id":
+	case "get_selected_text":
+	case "close":
+		echo json_encode([
+			'success' => true,
+			'stop_generation' => true,
+			'content' => "",
+		]);
+		break;
+	case "show":
+	case "hide":
 	case "change_title":
 		echo json_encode([
 			'success' => true,

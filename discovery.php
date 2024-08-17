@@ -68,13 +68,33 @@ $func = [
 				"properties" => [
 					"title" => [
 						"type" => "string",
-						"description" => "新的对话标题，要尽可能段"
+						"description" => "新的对话标题，要尽可能短"
 					]
 				]
 			],
 			"required" => (array) [
 				"title"
 			]
+		],
+		[
+			"name" => "close",
+			"description" => "关闭使用者的浏览器/页面（将会立即结束对话）",
+		],
+		[
+			"name" => "hide",
+			"description" => "隐藏对话框（当你要结束对话的时候，你可以使用此工具隐藏对话框。）",
+		],
+		[
+			"name" => "show",
+			"description" => "显示对话框（意味着开始和使用者对话）",
+		],
+		[
+			"name" => "get_current_post_id",
+			"description" => "获取用户当前浏览的文章(Post) ID",
+		],
+		[
+			"name" => "get_selected_text",
+			"description" => "当用户没有指代内容时，这个工具会很有用",
 		],
 	]
 ];
