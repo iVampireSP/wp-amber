@@ -1,0 +1,274 @@
+
+
+.leaflow-amber-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.leaflow-amber-header h2 {
+    margin: 0;
+    font-size: 1.2em; /* 减小字体大小 */
+}
+
+.leaflow-amber-header .leaflow-amber-header-title {
+    flex-grow: 1; /* 让标题占据可用空间 */
+}
+
+.leaflow-amber-header .leaflow-amber-header-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+#leaflow-amber-chat-messages {
+    flex-grow: 1; /* 让消息区域自适应剩余空间 */
+    overflow-y: auto; /* 消息过多时可以滚动 */
+    min-height: calc(30vh - 40px);
+}
+
+.leaflow-amber-chat-bubble-wrapper-left,
+.leaflow-amber-chat-bubble-wrapper-right {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* 减小间距 */
+    width: 100%; /* 占据整个宽度 */
+}
+
+.leaflow-amber-chat-bubble-wrapper-left {
+    justify-content: flex-start; /* 左对齐 */
+}
+
+.leaflow-amber-chat-bubble-wrapper-right {
+    justify-content: flex-end; /* 右对齐 */
+}
+
+.leaflow-amber-chat-bubble {
+    display: inline-block; /* 改为内联块，使宽度自动适应内容 */
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    padding: 0 12px; /* 减小内边距 */
+    position: relative;
+    max-width: 80%; /* 设置最大宽度 */
+    word-wrap: break-word; /* 自动换行 */
+    font-size: 0.9em; /* 减小字体大小 */
+}
+
+.leaflow-amber-chat-bubble * {
+    margin: 0;
+}
+
+.leaflow-amber-chat-bubble-left {
+    background-color: white;
+    text-align: left; /* 左对齐 */
+}
+
+.leaflow-amber-chat-bubble-left * {
+    color: black;
+}
+
+.leaflow-amber-chat-bubble-right {
+    background-color: #409eff;
+    text-align: right; /* 右对齐 */
+    margin-right: 5px;
+}
+
+.leaflow-amber-chat-bubble-right * {
+    color: white;
+}
+
+.leaflow-amber-input-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#leaflow-amber-message-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px; /* 减小输入框与按钮之间的间距 */
+}
+
+#leaflow-amber-send-button {
+    padding: 10px 20px;
+    background-color: #409eff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#leaflow-amber-clear-button {
+    padding: 10px 20px;
+    background-color: #ff4040;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#leaflow-amber-show-chat {
+    position: fixed;
+    bottom: 20px; /* 距离底部的距离 */
+    right: 20px; /* 距离右侧的距离 */
+    z-index: 1001; /* 确保按钮始终位于聊天窗口之上 */
+    padding: 10px;
+    background-color: #409eff;
+    color: white;
+    border: none;
+    border-radius: 50%; /* 设置为圆形 */
+    cursor: pointer;
+    outline: none;
+
+    transition: transform 0.5s ease-in-out;
+    transform: scale(1);
+}
+
+.leaflow-amber-footer {
+    margin-top: 10px;
+    text-align: center;
+}
+.leaflow-amber-chat-bubble p {
+    margin: 0;
+    padding: 5px;
+}
+
+#leaflow-amber-chat:after{
+    content: "";
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    overflow: hidden;
+    left: 0;
+    opacity: var(--after-opacity);
+    transition: all 2s ease-in-out;
+    background-size: 300% 300%;
+    animation: leaflow-amber-animatedgradient var(--animate-speed) ease alternate infinite;
+    background-image: linear-gradient(60deg, var(--liner-gradient-1),var(--liner-gradient-2),var(--liner-gradient-3),var(--liner-gradient-4),var(--liner-gradient-5),var(--liner-gradient-6),var(--liner-gradient-7),var(--liner-gradient-8),var(--liner-gradient-9),var(--liner-gradient-10)); !important;
+}
+
+#leaflow-amber-chat {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    max-width: 80vw;
+    min-height: 40vh;
+    max-height: 90vh;
+    margin: 0;
+    padding: 2px;
+    overflow: hidden;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    width: 50vh;
+    opacity: 0.95;
+
+    transition: all 0.3s ease-in-out;
+    transform: scale(0);
+    transform-origin: bottom right;
+
+
+    --animate-speed: 5s;
+    --after-opacity: 1;
+    --liner-gradient-1: transparent;
+    --liner-gradient-2: transparent;
+    --liner-gradient-3: transparent;
+    --liner-gradient-4: transparent;
+    --liner-gradient-5: transparent;
+    --liner-gradient-6: transparent;
+    --liner-gradient-7: transparent;
+    --liner-gradient-8: transparent;
+    --liner-gradient-9: transparent;
+    --liner-gradient-10:transparent;
+
+    /*background-image: linear-gradient(60deg, var(--liner-gradient-1),var(--liner-gradient-2),var(--liner-gradient-3),var(--liner-gradient-4),var(--liner-gradient-5),var(--liner-gradient-6),var(--liner-gradient-7),var(--liner-gradient-8),var(--liner-gradient-9),var(--liner-gradient-10));*/
+
+
+
+    /*animation: leaflow-amber-animatedgradient var(--animate-speed) ease alternate infinite;*/
+    /*background-image: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82) !important;*/
+}
+
+
+/*.leaflow-amber-gradient {*/
+/*    animation: leaflow-amber-animatedgradient var(--animate-speed) ease alternate infinite;*/
+/*    background-image: linear-gradient(60deg, var(--liner-gradient-1),var(--liner-gradient-2),var(--liner-gradient-3),var(--liner-gradient-4),var(--liner-gradient-5),var(--liner-gradient-6),var(--liner-gradient-7),var(--liner-gradient-8),var(--liner-gradient-9),var(--liner-gradient-10)); !important;*/
+/*}*/
+
+.leaflow-amber-chat-container {
+    /*width: calc(100% - 40px);*/
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+#leaflow-amber-chat {
+    background-color: #f5f5f5;
+}
+
+@keyframes leaflow-amber-animatedgradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+/* 媒体查询以适应暗色模式 */
+@media (prefers-color-scheme: dark) {
+    .leaflow-amber-chat-container {
+        background-color: #333;
+        color: white
+    }
+
+    #leaflow-amber-chat {
+        background-color: #333;
+    }
+
+    .leaflow-amber-header .leaflow-amber-header-close {
+        color: #ccc;
+        outline: none;
+    }
+
+    .leaflow-amber-chat-bubble-left, .leaflow-amber-chat-bubble-right {
+        background-color: #494949;
+    }
+
+    .leaflow-amber-chat-bubble-left *, .leaflow-amber-chat-bubble-right * {
+        color: white;
+    }
+
+    #leaflow-amber-message-input {
+        background-color: #444;
+        color: #fff;
+        border-color: #666;
+        outline: none;
+    }
+
+    #leaflow-amber-send-button {
+        background-color: #64b5f6;
+    }
+
+    #leaflow-amber-clear-button {
+        background-color: #ff5252;
+    }
+
+    .leaflow-amber-footer a{
+        color: white
+    }
+    #leaflow-amber-assistant-name {
+        color: white;
+        transition: color 0.5s ease-in-out;
+    }
+}
