@@ -38,11 +38,11 @@ $func = [
 						"type" => "string",
 						"description" => "搜索关键词"
 					]
+				],
+				"required" => (array) [
+					"keyword"
 				]
 			],
-			"required" => (array) [
-				"keyword"
-			]
 		],
 		[
 			"name" => "get_post",
@@ -54,11 +54,11 @@ $func = [
 						"type" => "string",
 						"description" => "文章 ID"
 					]
+				],
+				"required" => (array) [
+					"post_id"
 				]
 			],
-			"required" => (array) [
-				"post_id"
-			]
 		],
 		[
 			"name" => "change_title",
@@ -70,11 +70,11 @@ $func = [
 						"type" => "string",
 						"description" => "新的对话标题，要尽可能短"
 					]
+				],
+				"required" => (array) [
+					"title"
 				]
 			],
-			"required" => (array) [
-				"title"
-			]
 		],
 		[
 			"name" => "close",
