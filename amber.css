@@ -56,6 +56,10 @@
     font-size: 0.9em; /* 减小字体大小 */
 }
 
+.leaflow-amber-input-container * {
+    font-size: 0.7em;
+}
+
 .leaflow-amber-chat-bubble * {
     margin: 0;
 }
@@ -91,6 +95,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 5px; /* 减小输入框与按钮之间的间距 */
+    outline: none;
 }
 
 #leaflow-amber-send-button {
@@ -100,6 +105,11 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    outline: none;
+}
+
+#leaflow-amber-send-button:disabled {
+    background-color: #ff4040;
 }
 
 #leaflow-amber-clear-button {
@@ -159,7 +169,7 @@
     flex-direction: column;
     max-width: 80vw;
     min-height: 40vh;
-    max-height: 90vh;
+    max-height: 70vh;
     margin: 0;
     padding: 2px;
     overflow: hidden;

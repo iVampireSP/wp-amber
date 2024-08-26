@@ -454,7 +454,6 @@ class LeaflowAmber {
                     if (!setup) {
                         this.setupBufferInsert(messageElement)
                         setup = true
-
                     }
 
                     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -474,7 +473,9 @@ class LeaflowAmber {
         let classAdded = false
         let hasContent = false
 
-        const amberContainer = this.amberContainer()
+        const chatContainer = this.chatContainer()
+        const sendButton = this.sendButton()
+
 
         let buffer_timer = setInterval(() => {
             if (added && !classAdded) {
@@ -482,6 +483,9 @@ class LeaflowAmber {
                 // 添加 leaflow-amber-gradient css 到 amberContainer
                 // amberContainer.classList.add("leaflow-amber-gradient")
                 classAdded = true
+                // set button disabled
+                sendButton.setAttribute("disabled", "disabled")
+                sendButton.innerHTML = "请稍后"
             }
 
             // 获取 this.buffer 长度，每次只增加 1 个字符
@@ -499,8 +503,10 @@ class LeaflowAmber {
                     this.buffer = ""
 
                     this.setSpeed(1)
-                    // amberContainer.classList.remove("leaflow-amber-gradient")
                     this.setTransparent()
+
+                    sendButton.removeAttribute("disabled")
+                    sendButton.innerHTML = "发送"
 
 
                 } else if (hang_time > 1000) {
@@ -529,6 +535,8 @@ class LeaflowAmber {
                if (navigator.vibrate) {
                    navigator.vibrate(1)
                }
+
+               chatContainer.scrollTop = chatContainer.scrollHeight;
 
                messageElement.innerHTML = markdown.toHTML(content);
            }
