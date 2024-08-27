@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	$p = dirname( __FILE__ ) . '/../../../wp-load.php';
 	$p = realpath( $p );
-	require_once($p);
+	require_once( $p );
 }
 
 
@@ -10,7 +10,7 @@ header( "Content-Type: application/json" );
 
 $plugin_dir = leaflow_amber_get_plugin_url();
 
-$blog_name = get_bloginfo( 'name' );
+$blog_name        = get_bloginfo( 'name' );
 $blog_description = get_bloginfo( 'description' );
 
 $options = get_option( 'amber_options' );
@@ -27,74 +27,104 @@ $func = [
 	"description"  => $blog_description,
 	"homepage_url" => get_home_url(),
 	"callback_url" => $plugin_dir . 'callback.php',
-	"functions" => [
+	"functions"    => [
 		[
-			"name" => "search",
+			"name"        => "search",
 			"description" => "搜索 {$blog_name} 的博客，当用户要搜索时，你必须使用此工具",
-			"parameters" => (object) [
-				"type" => "object",
-				"properties" => [
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
 					"keyword" => [
-						"type" => "string",
+						"type"        => "string",
 						"description" => "搜索关键词"
 					]
-				],
-				"required" => (array) [
-					"keyword"
 				]
 			],
+			"required"    => (array) [
+				"keyword"
+			]
 		],
 		[
-			"name" => "get_post",
+			"name"        => "get_post",
 			"description" => "根据 search 工具的结果，获取一篇文章(需要你传入正确的文章 ID 为post_id)",
-			"parameters" => (object) [
-				"type" => "object",
-				"properties" => [
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
 					"post_id" => [
-						"type" => "string",
+						"type"        => "string",
 						"description" => "文章 ID"
 					]
-				],
-				"required" => (array) [
-					"post_id"
 				]
 			],
+			"required"    => (array) [
+				"post_id"
+			]
 		],
 		[
-			"name" => "change_title",
+			"name"        => "change_title",
 			"description" => "修改对话标题，默认是 $assistant_name",
-			"parameters" => (object) [
-				"type" => "object",
-				"properties" => [
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
 					"title" => [
-						"type" => "string",
+						"type"        => "string",
 						"description" => "新的对话标题，要尽可能短"
 					]
-				],
-				"required" => (array) [
-					"title"
 				]
 			],
+			"required"    => (array) [
+				"title"
+			]
 		],
 		[
-			"name" => "close",
+			"name"        => "close",
 			"description" => "关闭使用者的浏览器/页面（将会立即结束对话）",
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
+				]
+			],
+			"required"    => (array) []
 		],
 		[
-			"name" => "hide",
+			"name"        => "hide",
 			"description" => "隐藏对话框（当你要结束对话的时候，你可以使用此工具隐藏对话框。）",
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
+				]
+			],
+			"required"    => (array) []
 		],
 		[
-			"name" => "show",
+			"name"        => "show",
 			"description" => "显示对话框（意味着开始和使用者对话）",
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
+				]
+			],
+			"required"    => (array) []
 		],
 		[
-			"name" => "get_current_post_id",
+			"name"        => "get_current_post_id",
 			"description" => "获取用户当前浏览的文章(Post) ID",
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
+				]
+			],
+			"required"    => (array) []
 		],
 		[
-			"name" => "get_selected_text",
+			"name"        => "get_selected_text",
 			"description" => "当用户没有指代内容时，这个工具会很有用",
+			"parameters"  => (object) [
+				"type"       => "object",
+				"properties" => (object) [
+				]
+			],
+			"required"    => (array) []
 		],
 	]
 ];
