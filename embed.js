@@ -476,7 +476,7 @@ class LeaflowAmber {
     setupBufferInsert(messageElement) {
         let content = ""
         let i = 0
-        let hang_time = 0
+        let hangTime = 0
         let added = false
         let classAdded = false
         let hasContent = false
@@ -517,13 +517,13 @@ class LeaflowAmber {
                     sendButton.innerHTML = "发送"
 
 
-                } else if (hang_time > 1000) {
+                } else if (hangTime > 1000) {
                     // 如果超过 1 秒
                     this.setSpeed(5)
                     // 你也可以自定义函数在这里，但是可能要注意防抖
                 } else {
                     // 如果没有处理完成，则继续等待
-                    hang_time += this.buffer_delay
+                    hangTime += this.buffer_delay
                 }
 
                 hasContent = false
@@ -535,7 +535,7 @@ class LeaflowAmber {
                }
 
                // 恢复
-               hang_time = 0
+               hangTime = 0
                // 设置 amberContainer 的 --animate-speed
                this.setSpeed()
 
