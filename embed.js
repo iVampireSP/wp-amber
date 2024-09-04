@@ -499,8 +499,15 @@ class LeaflowAmber {
             // 获取 this.buffer 长度，每次只增加 1 个字符
             let length = this.buffer.length;
             if (i < length) {
-                content += this.buffer[i]
-                i++
+                // 如果 length - i < 10，则每次增加 1 个字符，否则每次增加 10 个字符
+                if (length - i < 10) {
+                    content += this.buffer[i]
+                    i++
+                } else {
+                    content += this.buffer.slice(i, i + 10)
+                    i += 10
+                }
+
                 hasContent = true
             } else {
                 // 检测是否处理完成
