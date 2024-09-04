@@ -38,11 +38,12 @@ $func = [
 						"type"        => "string",
 						"description" => "搜索关键词"
 					]
+				],
+				"required"    => (array) [
+					"keyword"
 				]
 			],
-			"required"    => (array) [
-				"keyword"
-			]
+
 		],
 		[
 			"name"        => "get_post",
@@ -54,11 +55,11 @@ $func = [
 						"type"        => "string",
 						"description" => "文章 ID"
 					]
+				],
+				"required"    => (array) [
+					"post_id"
 				]
 			],
-			"required"    => (array) [
-				"post_id"
-			]
 		],
 		[
 			"name"        => "change_title",
@@ -70,11 +71,12 @@ $func = [
 						"type"        => "string",
 						"description" => "新的对话标题，要尽可能短"
 					]
+				],
+				"required"    => (array) [
+					"title"
 				]
-			],
-			"required"    => (array) [
-				"title"
 			]
+
 		],
 		[
 			"name"        => "close",
@@ -82,9 +84,10 @@ $func = [
 			"parameters"  => (object) [
 				"type"       => "object",
 				"properties" => (object) [
-				]
+				],
+				"required"    => (array) []
 			],
-			"required"    => (array) []
+
 		],
 		[
 			"name"        => "hide",
@@ -92,9 +95,10 @@ $func = [
 			"parameters"  => (object) [
 				"type"       => "object",
 				"properties" => (object) [
-				]
+				],
+				"required"    => (array) []
 			],
-			"required"    => (array) []
+
 		],
 		[
 			"name"        => "show",
@@ -102,9 +106,9 @@ $func = [
 			"parameters"  => (object) [
 				"type"       => "object",
 				"properties" => (object) [
-				]
+				],
+				"required"    => (array) []
 			],
-			"required"    => (array) []
 		],
 		[
 			"name"        => "get_current_post_id",
@@ -112,9 +116,10 @@ $func = [
 			"parameters"  => (object) [
 				"type"       => "object",
 				"properties" => (object) [
-				]
+				],
+				"required"    => (array) []
 			],
-			"required"    => (array) []
+
 		],
 		[
 			"name"        => "get_selected_text",
@@ -122,9 +127,9 @@ $func = [
 			"parameters"  => (object) [
 				"type"       => "object",
 				"properties" => (object) [
-				]
+				],
+				"required"    => (array) []
 			],
-			"required"    => (array) []
 		],
 	]
 ];
