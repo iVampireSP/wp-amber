@@ -662,7 +662,7 @@ class LeaflowAmber {
             }
         }).then(res => {
             // if 403
-            if (res.status === 403) {
+            if (res.status === 403 || res.status === 404) {
                 this.setCalling("正在重置会话")
                 // 清除 localStorage
                 let needClear = ['leaflow_amber_chat_id', ]
