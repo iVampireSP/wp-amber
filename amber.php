@@ -3,12 +3,12 @@
 Plugin Name: Amber
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
-Version: 0.6.7-patch-6
+Version: 0.6.7-patch-7
 Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const LEAFLOW_AMBER_VERSION = '0.6.7-patch-6';
+const LEAFLOW_AMBER_VERSION = '0.6.7-patch-7';
 
 function amber_menu(): void {
 	add_options_page(

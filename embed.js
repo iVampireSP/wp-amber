@@ -303,6 +303,10 @@ class LeaflowAmber {
                         return data.data.stream_id
                     } else {
                         this.processing = false
+                        // 如果状态码是 404，则跳过
+                        if (data.status === 404 || data.status === 403) {
+                            return
+                        }
 
                         console.error(data)
                         alert(data.error)
@@ -317,6 +321,10 @@ class LeaflowAmber {
                 }
             }).catch(err => {
                 this.processing = false
+                // 如果状态码是 404，则跳过
+                if (data.status === 404 || data.status === 403) {
+                    return
+                }
                 console.error(err)
                 alert("发送失败")
             })
@@ -616,6 +624,10 @@ class LeaflowAmber {
 
                         return chat_id
                     } else {
+                        // 如果状态码是 404，则跳过
+                        if (data.status === 404 || data.status === 403) {
+                            return
+                        }
                         console.error(data)
                         alert(data.error)
                         return null
@@ -687,6 +699,11 @@ class LeaflowAmber {
                     this.chatContainer().scrollTop = this.chatContainer().scrollHeight;
 
                 } else {
+                    // 如果状态码是 404，则跳过
+                    if (data.status === 404 || data.status === 403) {
+                        return
+                    }
+
                     console.error(data)
                     alert(data.error)
                 }
@@ -712,6 +729,10 @@ class LeaflowAmber {
 
             this.clearLocalMessages()
         }).catch(() => {
+            // 如果状态码是 404，则跳过
+            if (data.status === 404 || data.status === 403) {
+                return
+            }
             console.error(data)
             alert(data.error)
         }).finally(() => {
