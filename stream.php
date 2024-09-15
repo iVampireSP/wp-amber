@@ -172,7 +172,7 @@ if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
 
 	curl_close( $ch );
 } else {
-	$json['assistant_token'] = $options['assistant_token'];
+	$json['assistant_key'] = $options['assistant_token'];
 	$json['guest_id']        = $_SESSION[ SESSION_GUEST_ID_KEY ] ?? generate_guest_id();
 
 	// 如果是 GET, 则解析 url 参数，将 assistant token 放入请求中
