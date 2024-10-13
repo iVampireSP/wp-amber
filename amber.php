@@ -3,12 +3,12 @@
 Plugin Name: Amber
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
-Version: 0.6.7-patch-9
+Version: 0.6.7-patch-7
 Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const LEAFLOW_AMBER_VERSION = '0.6.7-patch-9';
+const LEAFLOW_AMBER_VERSION = '0.6.7-patch-7-2';
 
 function amber_menu(): void {
 	add_options_page(
@@ -26,8 +26,8 @@ function amber_settings_page(): void {
 	?>
     <div class="wrap">
         <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-        <p>你的站点的回调地址是 <code><?php echo leaflow_amber_get_plugin_url(); ?>callback.php</code></p>
-        <p>你的站点的工具发现地址是 <code><?php echo leaflow_amber_get_plugin_url(); ?>discovery.php</code></p>
+        <p>你的站点的回调地址是 <code><?php echo esc_html(leaflow_amber_get_plugin_url()); ?>callback.php</code></p>
+        <p>你的站点的工具发现地址是 <code><?php echo esc_html(leaflow_amber_get_plugin_url()); ?>discovery.php</code></p>
         <form method="post" action="options.php">
 			<?php
 			settings_fields( 'amber_settings_group' ); // 定义设置字段组
@@ -365,7 +365,7 @@ function amber_add_post_id_to_comment_form( $comment_registration ) {
 
 	global $post;
 	$post_id = $post->ID;
-	echo '<div data-amber-post-id="' . $post_id . '"  data-amber-post-id-' . $post_id . '-answered="false"  style="display: none;"></div>';
+	echo '<div data-amber-post-id="' . esc_html($post_id) . '"  data-amber-post-id-' . esc_html($post_id) . '-answered="false"  style="display: none;"></div>';
 
 	remove_filter( current_filter(), __FUNCTION__ );
 
