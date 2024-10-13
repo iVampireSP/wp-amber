@@ -3,12 +3,12 @@
 Plugin Name: WPChat
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
-Version: 0.6.7-patch-7
+Version: 0.6.8
 Author: iVampireSP.com / Twilight
 Author URI: https://ivampiresp.com
 */
 
-const WP_CHAT_VERSION = '0.6.7-patch-7-2';
+const WP_CHAT_VERSION = '0.6.8';
 
 function wp_chat_menu(): void {
 	add_options_page(
