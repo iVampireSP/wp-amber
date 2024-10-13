@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Amber
+Plugin Name: Amberlet
 Plugin URI: https://ivampiresp.com
 Description: 让你的 WordPress 接入 Amber API
 Version: 0.6.7-patch-7
