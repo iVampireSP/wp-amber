@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WPChat
-Plugin URI: https://ivampiresp.com
+Plugin URI: https://ivampiresp.com/2024/08/12/bring-llm-to-wordpress
 Description: 让你的 WordPress 接入 Amber API
 Version: 0.6.8
 Author: iVampireSP.com / Twilight
