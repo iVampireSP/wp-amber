@@ -42,12 +42,12 @@ require_once 'init.php';
 
 session_start();
 
-const CACHE_GROUP = "amber";
+const CACHE_GROUP = "wp-chat";
 const LIMIT_COUNT = 10;
 
-const SESSION_GUEST_ID_KEY = "amber_guest_id";
+const SESSION_GUEST_ID_KEY = "wp_chat_guest_id";
 
-function leaflow_amber_get_ip_address() {
+function wp_chat_get_ip_address() {
 	foreach (
 		[
 			'HTTP_CLIENT_IP',
@@ -73,10 +73,10 @@ function leaflow_amber_get_ip_address() {
 	return $_SERVER['REMOTE_ADDR'];
 }
 
-define( "CLIENT_IP", leaflow_amber_get_ip_address() );
+define( "CLIENT_IP", wp_chat_get_ip_address() );
 
 // 获取缓存
-function leaflow_amber_cache_get( $key ): int {
+function wp_chat_cache_get( $key ): int {
 	$cache = wp_cache_get( $key, CACHE_GROUP );
 
 	// 转换成 int，如果不能转换，则 0
@@ -91,20 +91,20 @@ function leaflow_amber_cache_get( $key ): int {
 }
 
 // 获取用户 ip 在 1 分钟时间内的请求次数
-function leaflow_amber_get_ip_count(): int {
-	return leaflow_amber_cache_get( CLIENT_IP );
+function wp_chat_get_ip_count(): int {
+	return wp_chat_cache_get( CLIENT_IP );
 }
 
 // count + 1
-function leaflow_amber_cache_incr() {
-	$c = leaflow_amber_cache_get( CLIENT_IP ) + 1;
+function wp_chat_cache_incr() {
+	$c = wp_chat_cache_get( CLIENT_IP ) + 1;
 
 	wp_cache_set( CLIENT_IP, $c, CACHE_GROUP, 60 );
 }
 
 // -1
-function leaflow_amber_cache_decr() {
-	$cache = leaflow_amber_cache_get( CLIENT_IP );
+function wp_chat_cache_decr() {
+	$cache = wp_chat_cache_get( CLIENT_IP );
 
 	if ( $cache > 0 ) {
 		$cache = $cache - 1;
@@ -112,7 +112,7 @@ function leaflow_amber_cache_decr() {
 	}
 }
 
-if ( leaflow_amber_get_ip_count() > LIMIT_COUNT ) {
+if ( wp_chat_get_ip_count() > LIMIT_COUNT ) {
 	exit_json( [
 		'success' => false,
 		'content' => '你请求的太频繁了，请稍后再试。',
@@ -124,7 +124,7 @@ function je( $data ): void {
 }
 
 
-leaflow_amber_cache_incr();
+wp_chat_cache_incr();
 
 if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
 	ob_end_clean();
@@ -190,7 +190,7 @@ if ( isset( $paths[0] ) && $paths[0] == 'stream' ) {
 }
 
 // 释放
-leaflow_amber_cache_decr();
+wp_chat_cache_decr();
 
 function proxy_request( $url, $data = null, $method = 'GET', $headers = [] ) {
 	$ch = curl_init();
@@ -232,5 +232,5 @@ function proxy_request( $url, $data = null, $method = 'GET', $headers = [] ) {
 }
 
 function generate_guest_id() {
-	return $_SESSION['amber_guest_id'] = substr( md5( uniqid( rand(), true ) ), 0, 20 );
+	return $_SESSION['wp_chat_guest_id'] = substr( md5( uniqid( rand(), true ) ), 0, 20 );
 }

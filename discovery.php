@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 header( "Content-Type: application/json" );
 
-$plugin_dir = leaflow_amber_get_plugin_url();
+$plugin_dir = wp_chat_get_plugin_url();
 
 $blog_name        = get_bloginfo( 'name' );
 $blog_description = get_bloginfo( 'description' );

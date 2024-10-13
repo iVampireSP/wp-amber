@@ -190,7 +190,7 @@ class LeaflowAmber {
 
     amberConfig() {
         return {
-            server_url: "/wp-content/plugins/amber/stream.php"
+            server_url: "/wp-content/plugins/wp-chat/stream.php"
         }
     }
 
